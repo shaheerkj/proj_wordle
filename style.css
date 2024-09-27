@@ -60,12 +60,15 @@ h1{
 .hidden{
     visibility: hidden;
 }
-.wrong{
+.incorrect{
     background-color: gray;
+    color: white;
 }
 .close{
-    background-color: rgb(174, 148, 16);
+    background-color: rgb(221, 188, 21);
+    color: white;
 }
 .correct{
     background-color: rgb(48, 223, 48);
+    color: white;
 }
