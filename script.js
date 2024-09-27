@@ -27,7 +27,7 @@ let rows = document.querySelectorAll(".row");
 let index = 0;
 let rowIndex = 0;
 let wordle = '';
-
+let countOfGuesses = 0;
 
 (async function() {
     wordle = await generateAWord();
@@ -82,16 +82,35 @@ document.addEventListener("keydown",async function(event){
                 // index = 0;
                 let wordParts = wordle.split("");
                 let usrParts = usrString.split("");
+                let arr = wordle.split('');
                 console.log(usrParts);
                 console.log(wordParts);
                 for(let i = 0; i < 5; i++){
                     if(wordParts[i] === usrParts[i]){
                         divs[i].classList.add("correct");
-                        console.log(`Added class 'correct' to div ${i}`);
+                        arr[i] = '';
+                        countOfGuesses++;
                     }
-                    else if(wordParts.includes(usrParts[i])){
-
+                }
+                for(let i = 0; i < 5; i++){
+                    if(arr.includes(usrParts[i])){
+                        divs[i].classList.add("close");
+                        for(let j = 0; j < arr.length; j++){
+                            if(arr[j] === usrParts[i]){
+                                arr[j] = '';
+                            }
+                        }
                     }
+                }
+                for(let i = 0; i < 5; i++){
+                    if(!divs[i].classList.contains("correct") && !divs[i].classList.contains("close")){
+                        divs[i].classList.add("incorrect");
+                    }
+                }
+                rowIndex++;
+                index = 0;
+                if(rowIndex>6 || countOfGuesses===5){
+                    return;
                 }
             }
             else {
