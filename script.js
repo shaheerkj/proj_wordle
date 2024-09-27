@@ -5,7 +5,7 @@ async function generateAWord(){
     const WORD_URL = "https://words.dev-apis.com/word-of-the-day?random=1";
     const promise = await fetch(WORD_URL);
     const processedResponse = await promise.json();
-    return processedResponse.word;
+    return processedResponse.word.toUpperCase();
 }
 async function validateAWord(wordForValidation){
     const VALID_URL = "https://words.dev-apis.com/validate-word";
@@ -32,6 +32,7 @@ let wordle = '';
 (async function() {
     wordle = await generateAWord();
 })();
+//wordle = wordle.toUpperCase();
 
 document.addEventListener("keydown",async function(event){
     if (rowIndex >= rows.length) {
@@ -59,13 +60,13 @@ document.addEventListener("keydown",async function(event){
             return;
         }
         else if(divs[index].innerText === ''){
-            divs[index].innerText = keyPressed;
+            divs[index].innerText = keyPressed.toUpperCase();
             if(index < divs.length-1)
                 index++;
         }
     }
     else if(keyPressed === 'Enter'){
-        if(index === 4 && divs[index-1].innerText !== ''){
+        if(index === 4 && divs[index].innerText !== ''){
             let usrString = "";
             divs.forEach(function(div){
                 usrString += div.innerText;
@@ -73,14 +74,28 @@ document.addEventListener("keydown",async function(event){
             const isValid = await validateAWord(usrString);
             console.log(isValid);
             if(isValid){
-                divs.forEach(function(div){
-                    div.style.backgroundColor = "#538D4E";
-                    div.style.color = "white";
-                })
-                rowIndex++;
-                index = 0;
+                // divs.forEach(function(div){
+                //     div.style.backgroundColor = "#538D4E";
+                //     div.style.color = "white";
+                // })
+                // rowIndex++;
+                // index = 0;
+                let wordParts = wordle.split("");
+                let usrParts = usrString.split("");
+                console.log(usrParts);
+                console.log(wordParts);
+                for(let i = 0; i < 5; i++){
+                    if(wordParts[i] === usrParts[i]){
+                        divs[i].classList.add("correct");
+                        console.log(`Added class 'correct' to div ${i}`);
+                    }
+                    else if(wordParts.includes(usrParts[i])){
+
+                    }
+                }
             }
-            else{
+            else {
+
                 divs.forEach(function(div){
                     div.style.border = "2px solid red";
                 })
@@ -92,4 +107,5 @@ document.addEventListener("keydown",async function(event){
         }
     } 
     console.log(index);
+    console.log(wordle);
 })
