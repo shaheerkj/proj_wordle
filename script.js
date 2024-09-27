@@ -55,7 +55,10 @@ document.addEventListener("keydown",async function(event){
         }
     }
     else if(isLetter(keyPressed) && index < 5){
-        if(divs[index].innerText === ''){
+        if(index === 5){
+            return;
+        }
+        else if(divs[index].innerText === ''){
             divs[index].innerText = keyPressed;
             if(index < divs.length-1)
                 index++;
